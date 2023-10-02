@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Generator definition for generating Prisma client code
+generator client {
+  provider = "prisma-client-js"
+}
+
+// DataSource definition for connecting to a PostgreSQL database
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // The database connection URL (usually stored in an environment variable)
+}
+
+// schema.prisma
+
+// Model definition for the 'Employee' table
+model Employee {
+  id         Int      @id @default(autoincrement()) // Unique identifier for each employee (auto-incremented)
+  name       String   // Employee's last name
+  firstName  String   // Employee's first name
+  dateCreated DateTime @default(now()) // Date and time when the employee record was created (default to current timestamp)
+  department String   // Employee's department
+  checkIns   CheckIn[] // One-to-many relation: An employee can have multiple check-in records
+}
+
+// Model definition for the 'CheckIn' table
+model CheckIn {
+  id        Int      @id @default(autoincrement()) // Unique identifier for each check-in record (auto-incremented)
+  employee  Employee @relation(fields: [employeeId], references: [id]) // Foreign key relation to Employee
+  employeeId Int     // Foreign key field linking CheckIn to Employee
+  checkIn   DateTime // Date and time when the employee checked in
+  checkOut  DateTime? // Date and time when the employee checked out (optional)
+  comment   String?  // Optional comment associated with the check-in record
+  duration  Int?     // Duration in milliseconds (optional), calculated for the check-in/check-out pair
+}
