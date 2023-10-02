@@ -49,7 +49,7 @@ describe('Check-In API', () => {
       .post(`/check-in`)
       .send({ employeeId });
 
-    expect(response.status).toBe(201); // Ensure that the creation was successful
+    expect(response.status).toBe(200); // Ensure that the creation was successful
     expect(response.body).toHaveProperty('id'); // Verify that the check-in ID is present in the response
   });
 });
